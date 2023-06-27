@@ -1,5 +1,7 @@
 package models;
 
+import models.enums.Employees;
+
 import java.util.Objects;
 
 public class WorkingDay {
@@ -126,14 +128,15 @@ public class WorkingDay {
 
     @Override
     public String toString() {
-        return "День: " + date + '\n' +
-                "Працівник: " + employeeName + '\n' +
-                "Дохід картка: " + cardProfit + '\n' +
-                "Дохід готівка: " + cashProfit + '\n' +
-                "2% доходу" + employeePercent + '\n' +
-                "З/П за день" + dailySalary + '\n' +
-                "З/П за 10 днів" + generalSalary + '\n' +
-                "Загальний дохід" + profit + '\n' +
-                "Чистий дохід" + generalDailyProfit;
+        return  "| " +
+                this.date + " | " +
+                this.employeeName + " (зміна) | " +
+                this.cashProfit + " грн (карта) | " +
+                this.cashProfit + " грн (готівка) | " +
+                this.profit + " грн (разом) | " +
+                this.employeePercent + " грн (2%) | " +
+                this.dailySalary + " грн (з/п) | " +
+                this.generalSalary + " грн (з/п 10 дн.) | " +
+                this.generalDailyProfit + " грн (чисті) |\n";
     }
 }

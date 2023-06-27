@@ -1,6 +1,8 @@
 package view;
 
+import controller.WorkingDayController;
 import dao.WorkingDayDao;
+import models.WorkingDay;
 import services.WorkingDayService;
 
 import java.util.ArrayList;
@@ -8,25 +10,25 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Console {
-    private final WorkingDayService dayService;
-
+    private final WorkingDayController dayController;
     private final List<String> options;
     Scanner scanner = new Scanner(System.in);
 
     public Console() {
-        dayService = new WorkingDayService(new WorkingDayDao());
+        dayController = new WorkingDayController(new WorkingDayService(new WorkingDayDao()));
         options = new ArrayList<>();
         fillOptions();
     }
 
     public void run() {
+        dayController.generateData();
         while (true) {
             showMenu();
 
             String userChoice = scanner.nextLine();
-            switch (userChoice){
-                case "1" -> dayService.createWorkingDay();
-                case "2" -> System.out.println("Ви обрали отримати таблицю:");
+            switch (userChoice) {
+                case "1" -> dayController.createDay();
+                case "2" -> dayController.getAllAndPrint();
                 case "exit" -> exit();
             }
         }
@@ -48,4 +50,5 @@ public class Console {
         System.out.println("\nДопобачення");
         System.exit(1);
     }
+
 }

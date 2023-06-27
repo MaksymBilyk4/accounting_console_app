@@ -9,12 +9,7 @@ public class WorkingDayDao {
     List<WorkingDay> days = new ArrayList<>();
 
 
-    public WorkingDayDao() {
-    }
-
-    public WorkingDayDao(List<WorkingDay> days) {
-        this.days = days;
-    }
+    public WorkingDayDao() {}
 
     public List<WorkingDay> findAll() {
         return days;
