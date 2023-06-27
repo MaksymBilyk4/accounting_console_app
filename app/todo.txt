@@ -1,0 +1,4 @@
+todo:
+    - Calc Profit for n days
+    - Costs (Витрати) model and realization
+    - UI
