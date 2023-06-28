@@ -29,6 +29,8 @@ public class Console {
             switch (userChoice) {
                 case "1" -> dayController.createDay();
                 case "2" -> dayController.getAllAndPrint();
+                case "3" -> dayController.getByDate();
+                case "4" -> dayController.getStatisticFromDateAndCount();
                 case "exit" -> exit();
             }
         }
@@ -37,6 +39,8 @@ public class Console {
     public void fillOptions() {
         options.add("1. Додати робочий день");
         options.add("2. Отримати таблицю");
+        options.add("3. Отримати день за датою");
+        options.add("4. Отримати статистику за N днів");
         options.add("Щоб завершити роботу - напишіть exit");
     }
 

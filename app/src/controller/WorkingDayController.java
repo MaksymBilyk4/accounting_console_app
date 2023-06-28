@@ -68,12 +68,43 @@ public class WorkingDayController {
         Long dailyProfit = profit - percent - dailySalary - generalSalary;
         System.out.println("Чисті: " + dailyProfit + " грн");
 
-        dayService.createWorkingDay(date, employeeName, cardProfit, cashProfit, profit, percent, dailySalary, generalSalary, dailyProfit);
+        WorkingDay d = dayService.createWorkingDay(date, employeeName, cardProfit, cashProfit, profit, percent, dailySalary, generalSalary, dailyProfit);
+        System.out.println(d);
     }
 
     public void getAllAndPrint() {
         List<WorkingDay> days = dayService.getAllDays();
         days.forEach(System.out::println);
+    }
+
+    public void getByDate() {
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Ввдеіть дату в форматі dd.mm.yyyy. Приклад: 28.06.2023");
+        String dateString = scanner.nextLine();
+        List<WorkingDay> d = dayService.getDayByDate(dateString);
+        if (!d.isEmpty()) {
+            System.out.printf("Розрахунки за %s%n", d.get(0).getDate());
+            d.forEach(System.out::println);
+        } else {
+            System.out.println("\nНа жаль, такого дня не знайдено");
+        }
+    }
+
+    public void getStatisticFromDateAndCount () {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Введіть день з якого почати розрахунки. Приклад: 28.06.2023");
+        String dateString = scanner.nextLine();
+
+        System.out.println("Введіть кількість днів для підрахунку.");
+        int count = scanner.nextInt();
+
+        List<WorkingDay> workingDays = dayService.getCountDayStatistic(dateString, count);
+        workingDays.forEach(System.out::println);
+
+        WorkingDay statistic = dayService.calcStatisticForPeriod(workingDays);
+        System.out.println("Статистика за період " + workingDays.get(0).getDate() + " - " + workingDays.get(workingDays.size() - 1).getDate());
+        System.out.println(statistic);
     }
 
     public void generateData () {

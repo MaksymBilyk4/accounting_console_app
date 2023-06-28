@@ -41,6 +41,16 @@ public class WorkingDay {
         this.generalDailyProfit = generalDailyProfit;
     }
 
+    public WorkingDay(Long cardProfit, Long cashProfit, Long employeePercent, int dailySalary, int generalSalary, Long profit, Long generalDailyProfit) {
+        this.cardProfit = cardProfit;
+        this.cashProfit = cashProfit;
+        this.employeePercent = employeePercent;
+        this.dailySalary = dailySalary;
+        this.generalSalary = generalSalary;
+        this.profit = profit;
+        this.generalDailyProfit = generalDailyProfit;
+    }
+
     public String getDate() {
         return date;
     }
@@ -128,15 +138,15 @@ public class WorkingDay {
 
     @Override
     public String toString() {
-        return  "| " +
+        return "| " +
                 this.date + " | " +
                 this.employeeName + " (зміна) | " +
-                this.cashProfit + " грн (карта) | " +
-                this.cashProfit + " грн (готівка) | " +
-                this.profit + " грн (разом) | " +
-                this.employeePercent + " грн (2%) | " +
-                this.dailySalary + " грн (з/п) | " +
-                this.generalSalary + " грн (з/п 10 дн.) | " +
-                this.generalDailyProfit + " грн (чисті) |\n";
+                this.cashProfit + " (к) | " +
+                this.cardProfit + " (г) | " +
+                this.profit + " (разом) | " +
+                this.employeePercent + " (2%) | " +
+                this.dailySalary + " (з/п) | " +
+                this.generalSalary + " (10 дн.) | " +
+                this.generalDailyProfit + " (чисті) |\n";
     }
 }

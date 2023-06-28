@@ -7,7 +7,8 @@ import models.WorkingDay;
 import java.time.LocalDate;
 import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Scanner;
+import java.util.Random;
+import java.util.concurrent.ThreadLocalRandom;
 
 public class WorkingDayService {
     public final WorkingDayDao dao;
@@ -17,10 +18,10 @@ public class WorkingDayService {
     }
 
 
-    public void createWorkingDay(String date, Employees employee, Long cardProfit, Long cashProfit, Long profit, long percent, int dailySalary, int generalSalary, Long dailyProfit) {
+    public WorkingDay createWorkingDay(String date, Employees employee, Long cardProfit, Long cashProfit, Long profit, long percent, int dailySalary, int generalSalary, Long dailyProfit) {
         WorkingDay day = new WorkingDay(date, employee, cardProfit, cashProfit, percent, dailySalary, generalSalary, profit, dailyProfit);
-        System.out.println(day);
         dao.save(day);
+        return day;
     }
 
     public List<WorkingDay> getAllDays() {
@@ -28,20 +29,59 @@ public class WorkingDayService {
     }
 
     public void generateDaysData() {
+        int min = 500;
+        int max = 1000;
 
-        for (int i = 1; i <= 5; i++) {
-            WorkingDay day = new WorkingDay();
-            day.setDate(createCurrentDateFormat());
-            day.setEmployeeName(Employees.DARIA);
-            day.setCardProfit(2500L);
-            day.setCashProfit(2500L);
-            day.setProfit(day.getCardProfit() + day.getCashProfit());
-            day.setEmployeePercent((long) (day.getProfit() * 0.02));
-            day.setDailySalary(350);
-            day.setGeneralSalary(0);
-            day.setGeneralDailyProfit(day.getProfit() - day.getDailySalary() - day.getEmployeePercent() - day.getGeneralSalary());
+        for (int i = 1; i <= 30; i++) {
+            String dateStr = (i < 10) ? String.format("0%d.06.2023", i) : String.format("%d.06.2023", i);
+
+            long card = ThreadLocalRandom.current().nextLong(min, max + 1);
+            long cash = ThreadLocalRandom.current().nextLong(min, max + 1);
+            long profit = cash + card;
+            long percent = (long) (profit * 0.02);
+            Long generalProfit = profit - percent - 350;
+
+            WorkingDay day = new WorkingDay(dateStr, Employees.YULIA, card, cash, percent, 350, 0, profit, generalProfit);
+
             dao.save(day);
         }
+    }
+
+    public List<WorkingDay> getDayByDate (String dateStr) {
+        List<WorkingDay> days = getAllDays();
+
+        return days.stream()
+                .filter(day -> day.getDate().substring(0, 10).equals(dateStr))
+                .toList();
+    }
+
+    public List<WorkingDay> getCountDayStatistic(String date, int count) {
+        WorkingDay day = getDayByDate(date).get(0);
+        List<WorkingDay> dayList = getAllDays();
+
+        return dayList.subList(dayList.indexOf(day), dayList.indexOf(day) + count);
+    }
+
+    public WorkingDay calcStatisticForPeriod(List<WorkingDay> dayList) {
+        Long cardProfit = 0L;
+        Long cashProfit = 0L;
+        Long employeePercent = 0L;
+        int dailySalary = 0;
+        int generalSalary = 0;
+        Long profit = 0L;
+        Long generalProfit = 0L;
+
+        for (WorkingDay d: dayList) {
+            cardProfit += d.getCardProfit();
+            cashProfit += d.getCashProfit();
+            employeePercent += d.getEmployeePercent();
+            dailySalary += d.getDailySalary();
+            generalSalary += d.getGeneralSalary();
+            profit += d.getProfit();
+            generalProfit += d.getGeneralDailyProfit();
+        }
+
+        return new WorkingDay(cardProfit, cashProfit, employeePercent, dailySalary, generalSalary, profit, generalProfit);
     }
 
     public String createCurrentDateFormat() {
