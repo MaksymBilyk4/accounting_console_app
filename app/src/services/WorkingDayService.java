@@ -4,10 +4,7 @@ import dao.WorkingDayDao;
 import models.enums.Employees;
 import models.WorkingDay;
 
-import java.time.LocalDate;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
-import java.util.Random;
 import java.util.concurrent.ThreadLocalRandom;
 
 public class WorkingDayService {
@@ -20,12 +17,17 @@ public class WorkingDayService {
 
     public WorkingDay createWorkingDay(String date, Employees employee, Long cardProfit, Long cashProfit, Long profit, long percent, int dailySalary, int generalSalary, Long dailyProfit) {
         WorkingDay day = new WorkingDay(date, employee, cardProfit, cashProfit, percent, dailySalary, generalSalary, profit, dailyProfit);
-        dao.save(day);
-        return day;
+        return dao.save(day);
     }
 
     public List<WorkingDay> getAllDays() {
         return dao.findAll();
+    }
+
+    public Long getTotalProfit () {
+        return dao.findAll().stream()
+                .mapToLong(WorkingDay::getGeneralDailyProfit)
+                .sum();
     }
 
     public void generateDaysData() {
@@ -82,38 +84,5 @@ public class WorkingDayService {
         }
 
         return new WorkingDay(cardProfit, cashProfit, employeePercent, dailySalary, generalSalary, profit, generalProfit);
-    }
-
-    public String createCurrentDateFormat() {
-        LocalDate localDate = LocalDate.now();
-        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd.MM.yyyy");
-
-
-        switch (localDate.getDayOfWeek()) {
-            case MONDAY -> {
-                return localDate.format(formatter) + " Пн";
-            }
-            case TUESDAY -> {
-                return localDate.format(formatter) + " Вт";
-            }
-            case WEDNESDAY -> {
-                return localDate.format(formatter) + " Ср";
-            }
-            case THURSDAY -> {
-                return localDate.format(formatter) + " Чт";
-            }
-            case FRIDAY -> {
-                return localDate.format(formatter) + " Пт";
-            }
-            case SATURDAY -> {
-                return localDate.format(formatter) + " Сб";
-            }
-            case SUNDAY -> {
-                return localDate.format(formatter) + " Нд";
-            }
-            default -> {
-                return "";
-            }
-        }
     }
 }

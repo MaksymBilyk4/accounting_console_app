@@ -5,18 +5,21 @@ import models.WorkingDay;
 import java.util.ArrayList;
 import java.util.List;
 
-public class WorkingDayDao {
+public class WorkingDayDao implements Dao<WorkingDay> {
     List<WorkingDay> days = new ArrayList<>();
 
 
-    public WorkingDayDao() {}
+    public WorkingDayDao() {
+    }
 
+    @Override
     public List<WorkingDay> findAll() {
         return days;
     }
 
-    public List<WorkingDay> save(WorkingDay day) {
+    @Override
+    public WorkingDay save(WorkingDay day) {
         days.add(day);
-        return days;
+        return day;
     }
 }

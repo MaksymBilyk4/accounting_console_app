@@ -3,6 +3,7 @@ package controller;
 import models.WorkingDay;
 import models.enums.Employees;
 import services.WorkingDayService;
+import utils.DateFormatGenerator;
 
 import java.util.List;
 import java.util.Scanner;
@@ -14,6 +15,11 @@ public class WorkingDayController {
         this.dayService = dayService;
     }
 
+    public void getAllProfit() {
+        System.out.println("Чистий дохід за весь час:");
+        System.out.println(dayService.getTotalProfit() + " грн");
+    }
+
     public void createDay() {
         Scanner scanner = new Scanner(System.in);
         String date = "";
@@ -23,7 +29,7 @@ public class WorkingDayController {
 
         if (dateResponse.equals("так")) {
             System.out.println("Дата згенерована автоматично: ");
-            date = dayService.createCurrentDateFormat();
+            date = new DateFormatGenerator().createCurrentDateFormat();
         } else {
             System.out.println("Введіть дату в форматі (dd.mm.yyyy Day). Приклад - 20.04.2023 Пн");
             date = scanner.nextLine();
@@ -72,7 +78,7 @@ public class WorkingDayController {
         System.out.println(d);
     }
 
-    public void getAllAndPrint() {
+    public void printDaysTable() {
         List<WorkingDay> days = dayService.getAllDays();
         days.forEach(System.out::println);
     }
