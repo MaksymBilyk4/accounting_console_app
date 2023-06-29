@@ -65,7 +65,7 @@ public class Console {
 
     public void exit() {
         scanner.close();
-        System.out.println("\nДопобачення");
+        System.out.println("\nГарного дня!");
         System.exit(1);
     }
 
