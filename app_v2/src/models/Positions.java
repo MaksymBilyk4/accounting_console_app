@@ -1,4 +1,4 @@
-package workingWithDate.models;
+package models;
 
 public enum Positions {
     JUNIOR,
